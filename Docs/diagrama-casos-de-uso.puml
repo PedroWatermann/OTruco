@@ -1,0 +1,65 @@
+@startuml diagrama-casos-de-uso
+' Diagrama de casos de uso — O Truco (Truco Paulista 2x2)
+' Especificação completa em casos-de-uso.md
+
+' Layout embutido no PlantUML, para não depender do Graphviz instalado
+!pragma layout smetana
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "//Participante//" as Participante
+actor "Jogador" as Jogador
+actor "Bot" as Bot
+
+Participante <|-- Jogador
+Participante <|-- Bot
+
+rectangle "O Truco" {
+  usecase "UC01\nIniciar partida" as UC01
+  usecase UC02 as "UC02
+Iniciar mão
+--
+pontos de extensão:
+Mão especial"
+  usecase "UC03\nDecidir mão de onze" as UC03
+  usecase UC04 as "UC04
+Jogar carta
+--
+pontos de extensão:
+Escolha da face"
+  usecase "UC05\nJogar carta encoberta" as UC05
+  usecase "UC06\nPedir truco" as UC06
+  usecase "UC07\nResponder truco" as UC07
+  usecase "UC08\nResolver vaza" as UC08
+  usecase UC09 as "UC09
+Encerrar mão
+--
+pontos de extensão:
+Fim de partida"
+  usecase "UC10\nEncerrar partida" as UC10
+}
+
+' Associações
+Jogador -- UC01
+Jogador -- UC05
+Jogador -- UC10
+Participante -- UC03
+Participante -- UC04
+Participante -- UC06
+Participante -- UC07
+
+' Inclusões (base ..> incluído)
+UC01 ..> UC02 : <<include>>
+UC09 ..> UC02 : <<include>>
+UC04 ..> UC08 : <<include>>
+UC06 ..> UC07 : <<include>>
+UC03 ..> UC09 : <<include>>
+UC07 ..> UC09 : <<include>>
+UC08 ..> UC09 : <<include>>
+
+' Extensões (extensão ..> base)
+UC03 ..> UC02 : <<extend>>\n[um time com 11]
+UC05 ..> UC04 : <<extend>>\n[2ª vaza em diante]
+UC10 ..> UC09 : <<extend>>\n[um time com 12]
+
+@enduml
